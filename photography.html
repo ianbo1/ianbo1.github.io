@@ -8,6 +8,91 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ---- Photo gallery: large photos on alternating sides ---- */
+
+    /* The gallery is allowed to be wider than the text on the rest of the
+       page (up to 1200px), so the photos can be big. */
+    .gallery {
+      width: min(1200px, 100vw - 48px);
+      margin-left: calc(50% - min(600px, 50vw - 24px));
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6rem;               /* space between one photo and the next */
+    }
+
+    /* Each photo + its text is one "shot". The photo takes about 60% of
+       the width and the text takes the rest. */
+    .shot {
+      margin: 0;
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      grid-template-areas: "photo text";
+      gap: 3rem;
+      align-items: center;     /* text sits level with the middle of the photo */
+    }
+
+    /* Every second shot flips: text on the left, photo on the right. */
+    .shot:nth-child(even) {
+      grid-template-columns: 2fr 3fr;
+      grid-template-areas: "text photo";
+    }
+    .shot:nth-child(even) .shot-text {
+      text-align: right;
+    }
+
+    .shot > img,
+    .shot > .placeholder {
+      grid-area: photo;
+      display: block;
+      width: 100%;
+    }
+    .shot > img {
+      height: auto;
+      max-height: 85vh;        /* keeps tall photos from running off the screen */
+      object-fit: contain;
+    }
+    .shot > .placeholder {
+      aspect-ratio: 3 / 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shot-text {
+      grid-area: text;
+    }
+    .shot-text h2 {
+      margin: 0 0 0.75rem;
+      font-family: "Newsreader", Georgia, serif;
+      font-weight: 400;
+      font-size: 1.9rem;
+      line-height: 1.2;
+    }
+    .shot-text p {
+      margin: 0;
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    /* On phones and narrow windows: no alternating, just the photo with
+       its text underneath. */
+    @media (max-width: 760px) {
+      .gallery {
+        gap: 4rem;
+      }
+      .shot,
+      .shot:nth-child(even) {
+        grid-template-columns: 1fr;
+        grid-template-areas: "photo" "text";
+        gap: 1.25rem;
+      }
+      .shot:nth-child(even) .shot-text {
+        text-align: left;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -30,34 +115,49 @@
     <!--
       To add a photo:
         1. Upload the image into the "photos" folder on GitHub.
-        2. Copy one <figure>...</figure> block below.
-        3. Change src="photos/..." to your file's exact name, and edit the caption.
-      The grey "Your photo here" boxes are placeholders — delete them once
+        2. Copy one <figure class="shot">...</figure> block below.
+        3. Change src="photos/..." to your file's exact name (capital
+           letters matter: .JPG and .jpg are different).
+        4. Edit the alt text, the title and the description.
+      Photos alternate sides automatically: just add them in the order
+      you want them to appear.
+      The grey "Your photo here" boxes are placeholders. Delete them once
       you have real photos.
     -->
-    <div class="photos">
-      <!-- Example of a real photo (uncomment and edit once you've uploaded one):
-      <figure>
-        <img src="photos/my-photo.jpg" alt="Short description of the photo" loading="lazy">
-        <figcaption>Where and when it was taken</figcaption>
-      </figure>
-      -->
-      <figure>
+    <div class="gallery">
+
+      <figure class="shot">
         <img src="photos/green-line.JPG" alt="Green line trains" loading="lazy">
-        <figcaption>Riverside station</figcaption>
+        <figcaption class="shot-text">
+          <h2>Riverside station</h2>
+          <p>A sentence or three about this picture: where you were, what caught your eye, or how you took it.</p>
+        </figcaption>
       </figure>
-      <figure>
+
+      <figure class="shot">
         <div class="placeholder">Your photo here</div>
-        <figcaption>Caption &middot; Place, Year</figcaption>
+        <figcaption class="shot-text">
+          <h2>Title of the photo</h2>
+          <p>A short description of the photo.</p>
+        </figcaption>
       </figure>
-      <figure>
+
+      <figure class="shot">
         <div class="placeholder">Your photo here</div>
-        <figcaption>Caption &middot; Place, Year</figcaption>
+        <figcaption class="shot-text">
+          <h2>Title of the photo</h2>
+          <p>A short description of the photo.</p>
+        </figcaption>
       </figure>
-      <figure>
+
+      <figure class="shot">
         <div class="placeholder">Your photo here</div>
-        <figcaption>Caption &middot; Place, Year</figcaption>
+        <figcaption class="shot-text">
+          <h2>Title of the photo</h2>
+          <p>A short description of the photo.</p>
+        </figcaption>
       </figure>
+
     </div>
   </div>
 </main>
